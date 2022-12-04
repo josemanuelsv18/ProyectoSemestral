@@ -90,6 +90,7 @@ int main(){
     int comparacion;
     int menu_accion;
     int comparacion_disponible;
+    int estacionamiento_asignado;
     char placa_aprobada[6];
     int usuario;
     char nombre_registro[35];
@@ -121,18 +122,18 @@ int main(){
                 system("clear");
                 printf("2. Acceder al estacionamiento");
                 printf("\n-------------------------------------------------------------------------------------------------------\n");
-                if(disponibilidad>0){
+                if(disponibilidad>0){//chequear disponibilidad del estacionamiento
                     printf("Hay %d puesto/s disponibles\n",disponibilidad);
                     printf("Ingrese la placa del vehiculo para acceder al estacionamiento\n\nPlaca: ");
                     scanf("%s", placa_registro);
                     for(i= 0;i<15;i++){
                         comparacion=strcmp(placa_registro, placas[i]);
-                        if(comparacion==0){
+                        if(comparacion==0){//placa registrada
                             parkinglot=true;
                             strcpy(placa_aprobada, placa_registro);
                             usuario=i;
                             i=15;
-                        }else{
+                        }else{//placa fuera del registro
                             parkinglot=false;
                         }
                     } 
@@ -141,27 +142,25 @@ int main(){
                         printf("2. Acceder al estacionamiento");
                         printf("\n-------------------------------------------------------------------------------------------------------\n");
                         printf("El propietario del vehiculo de placa %s es %s\n",placa_aprobada, propietario[usuario]);
-                        for(i=0;i<10;i++){
+                        for ( i = 0; i < 10; i++){
                             comparacion_disponible=strcmp(libre_cmp[0],estacionamiento[i]);
-                            if(comparacion_disponible==0){
-                                estacionamiento[i]=placa_aprobada; 
-                                printf("Se le ha asignado el puesto de estacionamiento N°%d\n",i+1);
-                                printf("->%s\n", estacionamiento[i]);
+                            if (comparacion_disponible==0){
+                                estacionamiento[i]=placa_aprobada;
+                                estacionamiento_asignado=i;
+                                printf("El puesto asignado para la placa %s es %d\n",placa_aprobada,i+1);
                                 i=10;
-                            }
-                        } 
-                       
+                            }   
+                        }  
                     }else{
+                        memset(placa_registro,0,sizeof(placa_registro));
                         system("clear");
                         printf("2. Acceder al estacionamiento");
                         printf("\n-------------------------------------------------------------------------------------------------------\n");
                         printf("\nLa placa %s no se encuentra en el registro. Acceso denegado\n", placa_registro);
-                        printf("estacionamiento 1 es %s\n", estacionamiento[0]);
                     }
                 }else{
                     printf("Todos los estacionamientos se encuentran ocupados");
                 }
-                printf("%s\n", estacionamiento[0]); 
                 accion=MostrarSubmenu();
                 break;
             case 3:
