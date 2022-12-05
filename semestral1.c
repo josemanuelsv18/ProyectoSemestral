@@ -21,11 +21,9 @@ int MostrarSubmenu(){
     printf("\n1. Regresar al menu\n2. Salir del sistema\n");
     printf("\n-------------------------------------------------------------------------------------------------------\n");
     scanf("%d", &a);
-    if(a==1)
-    {
+    if(a==1){
         a=7;
-    }else if(a==2)
-    {
+    }else if(a==2){
         a=6;
     }
     return(a);
@@ -85,6 +83,7 @@ int main(){
     };
     char *libre_cmp[]={"Libre "};
     int i;
+    int ii;
     int a;
     int accion;
     int disponibilidad;
@@ -92,17 +91,17 @@ int main(){
     int menu_accion;
     int comparacion_disponible;
     int estacionamiento_asignado;
-    char placa_aprobada[6];
+    char placa_aprobada[6][15];
     int usuario;
     char nombre_registro[35];
-    char placa_registro[6];
-    char placa_valida[6];
+    char placa_registro[6][15];
     bool parkinglot;
     
-    //Bloque de instrucciones  
+    //Bloque de instrucciones 
     disponibilidad=VerificarDisponibilidad(estacionamiento);
     accion=MostrarMenu(disponibilidad);
-    do{ 
+    ii=0;
+    while (accion!=6){
         switch(accion){
         case 1: //Ver estacionamientos ocupados y disponibles
             system("clear");
@@ -117,8 +116,7 @@ int main(){
             printf("+-------------------+-------------------+--------------------+-------------------+--------------------+\n");
             printf("| %s            | %s            | %s             | %s            | %s             |\n", estacionamiento[5],estacionamiento[6],estacionamiento[7],estacionamiento[8],estacionamiento[9]);
             printf("+-------------------+-------------------+--------------------+-------------------+--------------------+\n");
-            disponibilidad=VerificarDisponibilidad(estacionamiento);
-            accion=MostrarSubmenu(disponibilidad);
+            accion=MostrarSubmenu();
             break;
         case 2: //acceder al estacionamiento
             system("clear");
@@ -127,53 +125,46 @@ int main(){
             if(disponibilidad>0){//chequear disponibilidad del estacionamiento
                 printf("Hay %d puesto/s disponibles\n",disponibilidad);
                 printf("Ingrese la placa del vehiculo para acceder al estacionamiento\n\nPlaca: ");
-                scanf("%s", placa_registro);
-                printf("la nueva placa es %s\n", placa_registro);
-                printf("la placa aprobada es %s\n", placa_aprobada);
-                printf("Estacionamiento 1 fuera del condicional %s\n", estacionamiento[0]);
+                scanf("%s", placa_registro[ii]);
                 for(i= 0;i<15;i++){
-                    comparacion=strcmp(placa_registro, placas[i]);
+                    comparacion=strcmp(placa_registro[ii], placas[i]);
                     if(comparacion==0){//placa registrada
                         parkinglot=true;
-                        strcpy(placa_aprobada, placa_registro);
+                        strcpy(placa_aprobada[ii], placa_registro[ii]);
                         usuario=i;
                         i=15;
-                        printf("la nueva placa aprobada es %s\n",placa_aprobada);
+                        printf("la nueva placa aprobada es %s\n",placa_aprobada[ii]);
                         printf("el estacionamiento en la etapa de confirmacion es %s\n",estacionamiento[0]);
                     }else{//placa fuera del registro
                         parkinglot=false;
                     }
                 } 
                 if(parkinglot==true){
-                    //system("clear");
+                    system("clear");
                     printf("2. Acceder al estacionamiento");
                     printf("\n-------------------------------------------------------------------------------------------------------\n");
-                    printf("El propietario del vehiculo de placa %s es %s\n",placa_aprobada, propietario[usuario]);
-                    printf("Fuera del ciclo %s\n",placa_aprobada);
-                    printf("Estacionamiento 1 fuera del ciclo %s\n", estacionamiento[0]);
+                    printf("El propietario del vehiculo de placa %s es %s\n",placa_aprobada[ii], propietario[usuario]);
                     for(a=0;a<10;a++){
                         comparacion_disponible=strcmp(libre_cmp[0],estacionamiento[a]);
-                        printf("Dentro del ciclo %s\n",placa_aprobada);
                         printf("%d\n",a);
-                        printf("estacionamiento dentro del ciclo %s en %d\n",estacionamiento[a],a);
                         if (comparacion_disponible==0){
-                            estacionamiento[a]=placa_aprobada;
+                            estacionamiento[a]=placa_aprobada[ii];
                             printf("Se le ha asignado el estacionamiento N°%d",a+1);
                             a=10;
                         }   
                     }
                 }else{
-                    memset(placa_registro,0,sizeof(placa_registro));
+                    memset(placa_registro[ii],0,sizeof(placa_registro[ii]));
                     system("clear");
                     printf("2. Acceder al estacionamiento");
                     printf("\n-------------------------------------------------------------------------------------------------------\n");
-                    printf("\nLa placa %s no se encuentra en el registro. Acceso denegado\n", placa_registro);
+                    printf("\nLa placa %s no se encuentra en el registro. Acceso denegado\n", placa_registro[ii]);
                 }
             }else{
                 printf("Todos los estacionamientos se encuentran ocupados");
             }
             disponibilidad=VerificarDisponibilidad(estacionamiento);
-            accion=MostrarSubmenu(disponibilidad);
+            accion=MostrarSubmenu();
             break;
         case 3:
             system("clear");
@@ -193,11 +184,8 @@ int main(){
             printf("\n-------------------------------------------------------------------------------------------------------\n");
             accion=MostrarSubmenu();
             break;
-        case 6:
-            system("clear");
-            printf("El programa ha finalizado\n");
-            break;
         case 7:
+            disponibilidad=VerificarDisponibilidad(estacionamiento);
             accion=MostrarMenu(disponibilidad);
             break;
         default:
@@ -206,9 +194,10 @@ int main(){
             printf("\n-------------------------------------------------------------------------------------------------------\n");
             accion=MostrarSubmenu();
             break;
+        }
+        ii++;
     }
-    }while(accion!=6);
     system("clear");
-    printf("El programa ha finalizado\n");
+    printf("El programa ha finalizado correctamente\n");
     return(0);
 }
