@@ -46,7 +46,7 @@ int main(){
     //declaracion de variables
     //Matrices principales
     char *propietario[]={
-        "Isaias Martin ",//1
+        "Isaias Martin",//1
         "Sonia Cuenca",//2
         "Marisa Quevedo",//3
         "Hassan Sanz",//4
@@ -106,10 +106,14 @@ int main(){
     char placa_salida[6];
     bool salida;
     //variables menu 4
+    int l;
+    int contador_registros;
+    char palabra_clave[8];
     int historial[1000][2];
     //Bloque de instrucciones 
     disponibilidad=VerificarDisponibilidad(estacionamiento);
     accion=MostrarMenu(disponibilidad);
+    contador_registros=0;
     ii=0;
     while (accion!=6){
         switch(accion){
@@ -143,7 +147,9 @@ int main(){
                         parkinglot=true;
                         strcpy(placa_aprobada[ii], placa_registro[ii]);
                         usuario=i;
-                        
+                        historial[contador_registros][0]=i;
+                        historial[contador_registros][1]=1;
+                        contador_registros++;
                         i=15;
                     }else{//placa fuera del registro
                         parkinglot=false;
@@ -201,6 +207,9 @@ int main(){
                     for(k=0;k<15;k++){
                         comparacion_salida=strcmp(placa_salida,placas[k]);
                         if(comparacion_salida==0){
+                            historial[contador_registros][0]=k;
+                            historial[contador_registros][1]=0;
+                            contador_registros++;
                             numero_usuario_salida=k;
                             k=15;
                         }
@@ -217,8 +226,16 @@ int main(){
             break;
         case 4:
             system("clear");
-            printf("selecciono la opcion 4");
+            printf("4. Registro de acceso");
             printf("\n-------------------------------------------------------------------------------------------------------\n");
+            for(l=0;l<contador_registros;l++){
+                if(historial[l][1]==1){
+                    strcpy(palabra_clave,"Entrada");
+                }else{
+                    strcpy(palabra_clave,"Salida");
+                }
+                printf("%d. %s con el vehiculo de placa %s registro: %s\n", l+1, propietario[historial[l][0]], placas[historial[l][0]],palabra_clave);
+            }
             accion=MostrarSubmenu();
             break;
         case 5:
