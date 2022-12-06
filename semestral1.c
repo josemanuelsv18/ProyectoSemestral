@@ -89,6 +89,7 @@ int main(){
     //Variables menu 2
     int ii;
     int a;
+    int b;
     int accion;
     int disponibilidad;
     int comparacion;
@@ -97,6 +98,7 @@ int main(){
     int usuario;
     char placa_registro[6][15];
     bool parkinglot;
+    bool duplicado;
     //Variables menu 3
     int j;
     int k;
@@ -162,14 +164,28 @@ int main(){
                     printf("2. Acceder al estacionamiento");
                     printf("\n-------------------------------------------------------------------------------------------------------\n");
                     printf("El propietario del vehiculo de placa %s es %s\n",placa_aprobada[ii], propietario[usuario]);
-                    for(a=0;a<10;a++){
-                        comparacion_disponible=strcmp(libre_cmp[0],estacionamiento[a]);
-                        if (comparacion_disponible==0){
-                            estacionamiento[a]=placa_aprobada[ii];
-                            printf("Se le ha asignado el estacionamiento N°%d",a+1);
-                            a=10;
-                        }   
-                    }
+                    for(b=0;b<10;b++){
+                            comparacion_disponible=strcmp(placa_aprobada[ii],estacionamiento[b]);
+                            if(comparacion_disponible==0){
+                                duplicado=true;
+                                b=10;
+                            }else{
+                                duplicado=false;
+                            }
+                        }
+                    if(duplicado==false)
+                    {
+                      for(a=0;a<10;a++){
+                            comparacion_disponible=strcmp(libre_cmp[0],estacionamiento[a]);
+                            if (comparacion_disponible==0){
+                                estacionamiento[a]=placa_aprobada[ii];
+                                printf("Se le ha asignado el estacionamiento N°%d",a+1);
+                                a=10;
+                            }   
+                        }  
+                    }else{
+                        printf("El vehiculo de placa %s que intenta ingresar ya se encuentra en el estacionamiento\n",placa_aprobada[ii]);
+                    }   
                 }else{//rechazar placa fuera del registro
                     memset(placa_registro[ii],0,sizeof(placa_registro[ii]));
                     system("clear");
