@@ -46,7 +46,7 @@ int main(){
     //declaracion de variables
     //Matrices principales
     char *propietario[]={
-        "Isaias Martin",//1
+        "Isaias Martin ",//1
         "Sonia Cuenca",//2
         "Marisa Quevedo",//3
         "Hassan Sanz",//4
@@ -98,7 +98,15 @@ int main(){
     char placa_registro[6][15];
     bool parkinglot;
     //Variables menu 3
-
+    int j;
+    int k;
+    int numero_usuario_salida;
+    int comparacion_salida;
+    int puestos_vacios;
+    char placa_salida[6];
+    bool salida;
+    //variables menu 4
+    int historial[1000][2];
     //Bloque de instrucciones 
     disponibilidad=VerificarDisponibilidad(estacionamiento);
     accion=MostrarMenu(disponibilidad);
@@ -135,14 +143,13 @@ int main(){
                         parkinglot=true;
                         strcpy(placa_aprobada[ii], placa_registro[ii]);
                         usuario=i;
+                        
                         i=15;
-                        printf("la nueva placa aprobada es %s\n",placa_aprobada[ii]);
-                        printf("el estacionamiento en la etapa de confirmacion es %s\n",estacionamiento[0]);
                     }else{//placa fuera del registro
                         parkinglot=false;
                     }
                 } 
-                if(parkinglot==true){
+                if(parkinglot==true){//asignar estacionamiento vacio
                     system("clear");
                     printf("2. Acceder al estacionamiento");
                     printf("\n-------------------------------------------------------------------------------------------------------\n");
@@ -155,7 +162,7 @@ int main(){
                             a=10;
                         }   
                     }
-                }else{
+                }else{//rechazar placa fuera del registro
                     memset(placa_registro[ii],0,sizeof(placa_registro[ii]));
                     system("clear");
                     printf("2. Acceder al estacionamiento");
@@ -168,11 +175,43 @@ int main(){
             disponibilidad=VerificarDisponibilidad(estacionamiento);
             accion=MostrarSubmenu();
             break;
-        case 3:
+        case 3://salida del estacionamiento
+            disponibilidad=VerificarDisponibilidad(estacionamiento);
+            puestos_vacios=0;
             system("clear");
             printf("3. Salida de estacionamiento");
             printf("\n-------------------------------------------------------------------------------------------------------\n");
-
+            if(disponibilidad<10){//si hay vehiculos en el estacionamiento se procede a dar salida
+                printf("Ingrese la placa del vehiculo a salir: ");
+                scanf("%s", placa_salida);
+                system("clear");
+                printf("3. Salida de estacionamiento");
+                printf("\n-------------------------------------------------------------------------------------------------------\n");
+                for(j=0;j<10;j++){//Buscar en que puesto se encuentra el vehiculo a salir
+                    comparacion_salida=strcmp(placa_salida,estacionamiento[j]);
+                    if(comparacion_salida==0){
+                        estacionamiento[j]="Libre ";
+                        salida=true;
+                        j=10;
+                    }else{//el vehiculo a salir no se encuentra en el estacionamiento
+                        salida=false;
+                    }
+                }
+                if(salida==true){//buscar el usuario al que le pertenece la placa administrada
+                    for(k=0;k<15;k++){
+                        comparacion_salida=strcmp(placa_salida,placas[k]);
+                        if(comparacion_salida==0){
+                            numero_usuario_salida=k;
+                            k=15;
+                        }
+                    }
+                    printf("El vehiculo de placa %s y propietario %s ha salido del estacionamiento",placa_salida, propietario[numero_usuario_salida]);
+                }else{
+                    printf("El vehiculo de placa %s no se encuentra en el estacionamiento, ingrese una placa valida", placa_salida);
+                }
+            }else{
+                printf("Todos los estacionamientos estan libres\nNo hay vehiculos para sacar del estacionamiento\n");
+            }
             disponibilidad=VerificarDisponibilidad(estacionamiento);
             accion=MostrarSubmenu();
             break;
