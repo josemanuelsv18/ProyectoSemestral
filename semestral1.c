@@ -110,6 +110,8 @@ int main(){
     int contador_registros;
     char palabra_clave[8];
     int historial[1000][2];
+    //variables menu 5
+
     //Bloque de instrucciones 
     disponibilidad=VerificarDisponibilidad(estacionamiento);
     accion=MostrarMenu(disponibilidad);
@@ -224,7 +226,7 @@ int main(){
             disponibilidad=VerificarDisponibilidad(estacionamiento);
             accion=MostrarSubmenu();
             break;
-        case 4:
+        case 4://mostrar registro de entrada y salida de vehiculos
             system("clear");
             printf("4. Registro de acceso");
             printf("\n-------------------------------------------------------------------------------------------------------\n");
@@ -238,9 +240,10 @@ int main(){
             }
             accion=MostrarSubmenu();
             break;
-        case 5:
+        case 5://listado vehiculos autorizados
             system("clear");
             printf("selecciono la opcion 5");
+
             printf("\n-------------------------------------------------------------------------------------------------------\n");
             accion=MostrarSubmenu();
             break;
