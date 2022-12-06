@@ -111,7 +111,7 @@ int main(){
     char palabra_clave[8];
     int historial[1000][2];
     //variables menu 5
-
+    int m;
     //Bloque de instrucciones 
     disponibilidad=VerificarDisponibilidad(estacionamiento);
     accion=MostrarMenu(disponibilidad);
@@ -242,9 +242,11 @@ int main(){
             break;
         case 5://listado vehiculos autorizados
             system("clear");
-            printf("selecciono la opcion 5");
-
+            printf("5. Registro de Usuarios Permitidos");
             printf("\n-------------------------------------------------------------------------------------------------------\n");
+            for (m=0;m<15;m++){
+                printf("Vehiculo autorizado N°%d:\nPropietario: %s\nPlaca: %s\n\n",m+1, propietario[m],placas[m]);
+            }
             accion=MostrarSubmenu();
             break;
         case 7:
